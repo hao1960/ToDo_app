@@ -1,0 +1,7 @@
+请从以下地址手动下载FontAwesome 4.7.0字体文件:
+
+1. https://github.com/FortAwesome/Font-Awesome/raw/v4.7.0/fonts/fontawesome-webfont.ttf
+
+下载后，请将文件重命名为 fontawesome-webfont.ttf 并放置在当前目录(fonts/)中。
+
+如果您使用的是浏览器，右键点击链接，选择"另存为..."，然后将文件保存到项目的fonts目录中。 

@@ -1,0 +1,31 @@
+如何在项目中安装和使用FontAwesome
+
+1. 下载FontAwesome
+   - 访问 https://fontawesome.com/download 下载免费版
+   - 或者从 https://github.com/FortAwesome/Font-Awesome/releases 下载v4.7.0或更新版本
+
+2. 安装字体文件
+   - 解压下载的文件
+   - 找到 fontawesome-webfont.ttf 文件（通常在 /fonts 目录下）
+   - 将该文件复制到你的项目的 /fonts 目录中
+
+3. 确保资源文件正确
+   - 确保 resources.qrc 文件包含了字体文件的路径
+   - 应该有类似这样的条目：<file>fonts/fontawesome-webfont.ttf</file>
+
+4. 在Qt Creator中
+   - 重新运行qmake
+   - 清理并重新构建项目
+
+5. 使用图标
+   - 在代码中使用 FontHelper 类来获取和显示图标
+   - 例如：
+     ```cpp
+     FontHelper fontHelper;
+     QPushButton* button = new QPushButton();
+     button->setFont(fontHelper.iconFont());
+     button->setText(fontHelper.iconToString(FontHelper::FA_PLUS) + " 新建分类");
+     ```
+
+注意：如果你在运行时看到警告 "FontAwesome font file not found!" 或 "Could not load FontAwesome font!"，
+请检查字体文件是否正确放置且已包含在资源文件中。 

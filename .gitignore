@@ -1,0 +1,72 @@
+# Qt-specific ignore patterns
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*build-*
+*.qm
+.qmake.stash
+
+# Qt Creator
+CMakeLists.txt.user*
+
+# Build directories
+build/
+debug/
+release/
+installer/ToDo任务管理器_Setup.exe
+
+# Compiled object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Windows specific
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Task data files
+tasks_*.json
+
+# Editor config
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*.swp
+*~ 

@@ -1,0 +1,51 @@
+name: Build ToDo App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.5.0'
+        host: 'windows'
+        target: 'desktop'
+        arch: 'win64_msvc2019_64'
+        tools: 'tools_ifw,4.6.0,qt.tools.ifw.46 tools_mingw,9.0.0-1-202203221220,qt.tools.win64_mingw900'
+        cache: true
+    
+    - name: Build
+      shell: cmd
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        mkdir build
+        cd build
+        qmake ../ToDo_app.pro
+        nmake
+      
+    - name: Deploy Qt dependencies
+      shell: cmd
+      run: |
+        cd build\release
+        windeployqt ToDo_app.exe
+    
+    - name: Create installer
+      run: |
+        choco install -y innosetup
+        iscc E:\QT_app\ToDo_app\ToDo_app_setup.iss
+      
+    - name: Upload installer
+      uses: actions/upload-artifact@v3
+      with:
+        name: ToDo-app-installer
+        path: E:\QT_app\ToDo_app\installer\ToDo任务管理器_安装程序.exe
