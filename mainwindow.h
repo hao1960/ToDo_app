@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QTabWidget>
 #include <QListWidget>
+#include <QStandardItemModel>
 #include "fonthelper.h"
 
 QT_BEGIN_NAMESPACE
@@ -48,9 +49,11 @@ private:
     QMap<QString, QListWidget*> m_categoryLists; // 存储各个分类的任务列表
     int m_currentTabIndex; // 当前选中的标签页索引
     QListWidget*taskList;
+    QStandardItemModel *taskModel; // 任务模型
     QPixmap m_backgroundImage; // 背景图片
     QString m_backgroundImagePath; // 背景图片路径
     FontHelper m_fontHelper; // 字体图标帮助类
+    QString m_currentCategory; // 当前选中的分类
     void saveSettings(); // 保存设置（包括背景图片路径）
     void loadSettings(); // 加载设置
     void initTabWidget(); // 初始化标签页控件
@@ -62,5 +65,6 @@ private:
     void enhanceLabelsVisibility(); // 增强标签可见性的方法
     bool isImageDark(const QImage &image); // 检查图片是否偏暗
     QImage enhanceImageBrightness(const QImage &image, int percent); // 增强图片亮度
+    void initializeApp(); // 添加缺失的函数声明
 };
 #endif // MAINWINDOW_H

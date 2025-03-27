@@ -1,6 +1,9 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-    <qresource>
+    <qresource prefix="/">
+        <!-- 确保使用相对路径 -->
         <file>fonts/fontawesome-webfont.ttf</file>
+        <!-- 更新图标路径为正确的文件名 -->
+        <file>icons/todolist.ico</file>
     </qresource>
-</RCC> 
+</RCC>
