@@ -38,8 +38,28 @@ TRANSLATIONS += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
+# 资源文件
 RESOURCES += \
     resources.qrc
+
+# 应用图标设置
+win32 {
+    RC_ICONS = $$PWD/icons/todolist.ico
+}
+macx {
+    ICON = $$PWD/icons/todolist.icns
+}
+unix:!macx {
+    # Linux图标
+    icon.files = $$PWD/icons/todolist.png
+    icon.path = $$PREFIX/share/icons/hicolor/256x256/apps
+    INSTALLS += icon
+    
+    # .desktop文件
+    desktop.files = ToDo_app.desktop
+    desktop.path = $$PREFIX/share/applications
+    INSTALLS += desktop
+}
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

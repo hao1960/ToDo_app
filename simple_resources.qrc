@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <!-- 只包含字体，暂时不包含图标 -->
+        <file>fonts/fontawesome-webfont.ttf</file>
+        <!-- 可以稍后添加图标 -->
+        <!-- <file>icons/todolist.ico</file> -->
+    </qresource>
+</RCC>

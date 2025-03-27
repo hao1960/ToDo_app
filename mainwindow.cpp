@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent)
     , m_currentTabIndex(0)
 {
     ui->setupUi(this);
+    
+    // 初始化taskModel
+    taskModel = new QStandardItemModel(this);
 
     // 设置窗口属性，允许背景绘制
     setAttribute(Qt::WA_StyledBackground);
@@ -55,8 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->addCategoryButton, &QPushButton::clicked, this, &MainWindow::addCategory);
     //删除分类
     ui->tabWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->tabWidget, &QTabWidget::customContextMenuRequested, [this](const QPoint &pos) {
-        // 显示右键菜单
+    connect(ui->tabWidget, &QWidget::customContextMenuRequested, this, [this](const QPoint &pos) {
         QMenu contextMenu(this);
         QAction *deleteAction = contextMenu.addAction(m_fontHelper.iconToString(FontHelper::FA_TRASH) + " 删除分类");
         deleteAction->setFont(m_fontHelper.iconFont(10));
@@ -177,8 +179,8 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置窗口标题和图标
     setWindowTitle("ToDo 任务管理");
     setMinimumSize(800, 600); // 设置最小窗口大小
-    
-    // 增强标签可见性
+       
+    // 增强标签可见性    // 初始化应用 - 添加这一行
     enhanceLabelsVisibility();
 }
 
@@ -320,7 +322,7 @@ QListWidget* MainWindow::createTaskListWidget() {
     listWidget->setWordWrap(true);
     listWidget->setTextElideMode(Qt::ElideNone);
     
-    // 禁用项目的焦点矩形
+    // 禁用项目的焦点矩形点矩形
     listWidget->setFocusPolicy(Qt::NoFocus);
     
     // 连接双击事件
@@ -370,21 +372,21 @@ QListWidget* MainWindow::createTaskListWidget() {
             });
             
             // 连接删除操作
-            connect(deleteAction, &QAction::triggered, [this, listWidget, item]() {
+            connect(deleteAction, &QAction::triggered, [this, item]() {
                 // 获取当前分类
                 QString currentCategory = ui->tabWidget->tabText(m_currentTabIndex);
                 
                 // 删除任务
                 delete item;
-                
+                 
                 // 保存任务
                 saveTasksByCategory(currentCategory);
             });
-            
+                 
             contextMenu.exec(listWidget->mapToGlobal(pos));
         }
     });
-    
+        
     return listWidget;
 }
 
@@ -398,7 +400,7 @@ void MainWindow::onTabChanged(int index) {
             oldList->clearFocus();     // 清除焦点
         }
     }
-    
+       
     // 更新当前标签页索引
     m_currentTabIndex = index;
 }
@@ -421,7 +423,7 @@ void MainWindow::addCategory() {
         // 添加到标签页
         int newTabIndex = ui->tabWidget->addTab(m_categoryLists[categoryName], categoryName);
         ui->tabWidget->setCurrentIndex(newTabIndex);
-        
+           
         // 保存分类列表
         saveCategories();
     }
@@ -460,7 +462,7 @@ void MainWindow::deleteCategory() {
         QString safeCategory = categoryName;
         QString fileName = "tasks_" + safeCategory.replace(" ", "_") + ".json";
         QFile::remove(fileName);
-        
+           
         // 保存分类列表
         saveCategories();
     }
@@ -505,7 +507,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
         stripGradient.setColorAt(1, QColor("#264653"));
         painter.fillRect(bottomStripe, stripGradient);
     }
-    
+        
     QMainWindow::paintEvent(event); // 在绘制完背景后调用父类的paintEvent
 }
 
@@ -589,12 +591,12 @@ bool MainWindow::isImageDark(const QImage &image) {
     
     // 计算平均亮度
     int averageBrightness = totalBrightness / samplesCount;
-    
+       
     // 如果平均亮度低于128（中值），则认为图片偏暗
     return averageBrightness < 128;
 }
 
-// 增强图片亮度
+// 增强图片亮度强图片亮度
 QImage MainWindow::enhanceImageBrightness(const QImage &image, int percent) {
     QImage result = image;
     
@@ -609,11 +611,11 @@ QImage MainWindow::enhanceImageBrightness(const QImage &image, int percent) {
             int r = qMin(255, static_cast<int>(pixelColor.red() * factor));
             int g = qMin(255, static_cast<int>(pixelColor.green() * factor));
             int b = qMin(255, static_cast<int>(pixelColor.blue() * factor));
-            
+                   
             result.setPixelColor(x, y, QColor(r, g, b, pixelColor.alpha()));
         }
     }
-    
+        
     return result;
 }
 
@@ -628,7 +630,7 @@ void MainWindow::resetBackgroundImage() {
     
     // 重绘窗口
     update();
-    
+       
     // 显示确认消息
     QMessageBox::information(this, tr("背景已重置"), tr("已恢复默认背景"));
 }
@@ -653,7 +655,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
     // 检查事件是否来自任务输入框且是否为按键事件
     if (obj == ui->inputTask && event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-        // 检查是否按下了Ctrl+Enter组合键
+        // 检查是否按下了Ctrl+Enter组合键Enter组合键
         if ((keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) && 
             keyEvent->modifiers() == Qt::ControlModifier) {
             // 调用添加任务函数
@@ -662,7 +664,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
         }
         return false; // 让QTextEdit处理其他按键事件
     }
-    // 检查事件是否来自搜索框且是否为按键事件
+    // 检查事件是否来自搜索框且是否为按键事件为按键事件
     else if (obj == ui->searchLineEdit && event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         // 检查是否按下了回车键
@@ -716,7 +718,7 @@ void MainWindow::addTask() {
     
     // 选中新添加的任务
     currentList->setCurrentItem(item);
-    
+        
     // 动画效果：滚动到新添加的项目
     currentList->scrollToItem(item);
 
@@ -749,7 +751,7 @@ void MainWindow::deleteTask()
     QListWidgetItem* item = currentList->currentItem();
     if (item) {
         delete item; // 删除选中项目
-        
+           
         // 保存任务
         saveTasksByCategory(currentCategory);
     }
@@ -910,44 +912,40 @@ void MainWindow::editTask(QListWidgetItem* item)
             // 插入新项到原来的位置
             currentList->insertItem(currentRow, newItem);
             currentList->setCurrentItem(newItem);
-            
+               
             // 保存任务
             saveTasksByCategory(currentCategory);
         }
     }
-    
+       
     // 重新连接itemChanged信号
     connect(currentList, &QListWidget::itemChanged, this, &MainWindow::handleTaskStateChange);
 }
 
 //搜索任务
-void MainWindow::searchTask()
-{
-    QString keyword = ui->searchLineEdit->text().trimmed();  // 获取搜索关键字
-    
+void MainWindow::searchTask() {
+    QString keyword = ui->searchLineEdit->text().trimmed();
     if (m_categoryLists.isEmpty()) return;
-    
     // 遍历所有分类，搜索匹配的任务
     for (auto it = m_categoryLists.begin(); it != m_categoryLists.end(); ++it) {
         QListWidget* listWidget = it.value();
         if (!listWidget) continue;
-        
-    if (keyword.isEmpty()) {
-        // 如果搜索框为空，显示所有任务
+        if (keyword.isEmpty()) {
+            // 如果搜索框为空，显示所有任务
             for (int i = 0; i < listWidget->count(); ++i) {
                 listWidget->item(i)->setHidden(false);
-        }
+            }
         } else {
-    // 遍历列表并隐藏不匹配的任务
+            // 遍历列表并隐藏不匹配的任务
             for (int i = 0; i < listWidget->count(); ++i) {
                 QListWidgetItem* item = listWidget->item(i);
-        if (!item->text().contains(keyword, Qt::CaseInsensitive)) {
-            item->setHidden(true);  // 不匹配则隐藏
-        } else {
-            item->setHidden(false); // 匹配则显示
+                if (!item->text().contains(keyword, Qt::CaseInsensitive)) {
+                    item->setHidden(true);  // 不匹配则隐藏
+                } else {
+                    item->setHidden(false); // 匹配则显示
+                }
+            }
         }
-    }
-}
     }
 }
 
@@ -1016,15 +1014,15 @@ void MainWindow::loadTasksByCategory(const QString &category) {
         // 调整item高度
         QSize itemSize = item->sizeHint();
         int lineCount = taskText.count('\n') + 1;
-        int height = std::max(60, lineCount * 30); // 更宽敞高度
+        int height = std::max(60, lineCount * 30); // 更宽敞高度        int height = std::max(60, lineCount * 30); // 更宽敞高度
         itemSize.setHeight(height);
         item->setSizeHint(itemSize);
 
         // 根据完成状态设置样式，增强可见性
         QFont font = item->font();
         font.setPointSize(14);
-        font.setBold(!isCompleted); // 未完成任务使用粗体增强可读性
-        font.setStrikeOut(isCompleted); // 已完成任务添加删除线
+        font.setBold(!isCompleted); // 未完成任务使用粗体增强可读性font.setBold(!isCompleted); // 未完成任务使用粗体增强可读性
+        font.setStrikeOut(isCompleted); // 已完成任务添加删除线ikeOut(isCompleted); // 已完成任务添加删除线
         item->setFont(font);
         
         // 使用新的配色方案
@@ -1068,17 +1066,17 @@ void MainWindow::handleTaskStateChange(QListWidgetItem* item) {
         font.setStrikeOut(false);
         font.setBold(true); // 使用粗体增强可读性
         item->setFont(font);
-        item->setForeground(QColor("#264653")); // 深青色文字
-        
-        // 恢复背景
-        item->setBackground(QColor("#FFFFFF")); // 白色背景
+        item->setForeground(QColor("#264653")); // 深青色文字字
+           
+        // 恢复背景    // 恢复背景
+        item->setBackground(QColor("#FFFFFF")); // 白色背景etBackground(QColor("#FFFFFF")); // 白色背景
     }
-    
-    // 保存任务状态变化
+       
+    // 保存任务状态变化    // 保存任务状态变化
     saveTasksByCategory(currentCategory);
 }
 
-//过滤功能
+//过滤功能功能
 void MainWindow::filterTasks(int index) {
     if (m_categoryLists.isEmpty()) return;
     
@@ -1086,7 +1084,7 @@ void MainWindow::filterTasks(int index) {
     for (auto it = m_categoryLists.begin(); it != m_categoryLists.end(); ++it) {
         QListWidget* listWidget = it.value();
         if (!listWidget) continue;
-        
+                
         for (int i = 0; i < listWidget->count(); ++i) {
             QListWidgetItem* item = listWidget->item(i);
 
@@ -1126,6 +1124,47 @@ void MainWindow::enhanceLabelsVisibility() {
             label->setStyleSheet(labelStyle);
         }
     }
+}
+
+void MainWindow::initializeApp() {
+    // 检查是否首次运行（通过查找默认任务文件）
+    QSettings settings;
+    bool firstRun = !settings.contains("initialized") || settings.value("initialized").toBool() == false;
+    
+    if (firstRun) {
+        // 首次运行时初始化默认设置
+        settings.setValue("initialized", true);
+        
+        // 创建默认分类
+        QStringList defaultCategories = {"工作", "个人", "购物"};
+        settings.setValue("categories", defaultCategories);
+        
+        // 为每个默认分类创建空的任务文件
+        foreach (const QString &category, defaultCategories) {
+            QString fileName = QString("tasks_%1.json").arg(category);
+            QFile file(QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).filePath(fileName));
+            
+            if (!file.exists()) {
+                // 创建包含空任务列表的文件
+                if (file.open(QIODevice::WriteOnly)) {
+                    QJsonObject tasksObject;
+                    QJsonArray tasksArray;
+                    tasksObject["tasks"] = tasksArray;
+                    
+                    QJsonDocument document(tasksObject);
+                    file.write(document.toJson());
+                    file.close();
+                }
+            }
+        }
+        
+        // 设置当前分类为第一个默认分类
+        m_currentCategory = defaultCategories.first();
+    }
+    
+    // 加载分类和任务
+    initTabWidget(); // 初始化标签页，这会加载分类
+    loadTasks();
 }
 
 MainWindow::~MainWindow()
