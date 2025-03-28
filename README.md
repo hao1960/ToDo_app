@@ -2,9 +2,10 @@
 
 <div align="center">
 <img src="icons/todolist.ico" alt="ToDo应用图标" width="128"/>
-  
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-2.0.3-green.svg)](RELEASE_NOTES.md)
+
 </div>
 
 ## 项目概述
@@ -31,24 +32,24 @@ ToDo 任务列表是一个使用 Qt 框架开发的桌面应用程序，旨在�
 
 ### Windows
 
-从[Releases页面](https://github.com/YourUsername/todo-app/releases)下载最新的安装包`ToDo任务管理器_安装程序.exe`，双击运行即可完成安装。
+从[Releases页面](https://github.com/YourUsername/todo-app/releases)下载最新的安装包 `ToDo任务管理器_安装程序.exe`，双击运行即可完成安装。
 
 ### 从源码构建
 
 1. 克隆仓库
+
    ```
-   git clone https://github.com/YourUsername/todo-app.git
+   git clone https://github.com/hao1960/todo-app.git
    cd todo-app
    ```
-
-2. 使用Qt Creator打开`ToDo_app.pro`文件并构建项目
+2. 使用Qt Creator打开 `ToDo_app.pro`文件并构建项目
 
    或者使用命令行构建：
+
    ```bash
    qmake ToDo_app.pro
    mingw32-make -j4
    ```
-
 3. 使用Inno Setup运行 `installer/ToDo_app_setup.iss` 可创建安装程序
 
 ## 使用方法
@@ -99,15 +100,16 @@ ToDo 任务列表是一个使用 Qt 框架开发的桌面应用程序，旨在�
 ### 管理任务分类
 
 1. **创建新分类**:
+
    - 点击界面顶部的"+"按钮
    - 在弹出的对话框中输入分类名称
    - 点击"确定"创建新分类
-
 2. **切换分类**:
+
    - 点击顶部的分类标签可以在不同分类之间切换
    - 每个分类都有独立的任务列表
-
 3. **删除分类**:
+
    - 右键点击要删除的分类标签
    - 在弹出的菜单中选择"删除分类"
 
@@ -136,6 +138,7 @@ ToDo 任务列表是一个使用 Qt 框架开发的桌面应用程序，旨在�
 3. 创建应用程序所需的配置文件
 
 首次运行后，你可以开始添加任务，所有数据将会保存到用户数据目录：
+
 - Windows: `%APPDATA%\个人开发\ToDo任务管理器`
 - macOS: `~/Library/Application Support/ToDo任务管理器`
 - Linux: `~/.local/share/ToDo任务管理器`
@@ -215,7 +218,7 @@ ToDo 任务列表是一个使用 Qt 框架开发的桌面应用程序，旨在�
 
 如有问题或建议，欢迎在Issues中提出，或通过以下方式联系我：
 
-- GitHub Issues: [https://github.com/YourUsername/todo-app/issues](https://github.com/YourUsername/todo-app/issues)
+- GitHub Issues: [https://github.com/hao960/todo-app/issues](https://github.com/YourUsername/todo-app/issues)
 - Email: your-email@example.com
 
 ## 致谢
