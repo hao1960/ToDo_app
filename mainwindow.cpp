@@ -347,25 +347,30 @@ QListWidget* MainWindow::createTaskListWidget() {
     
     // 设置样式表，使用新的Coolors配色方案，增强对比度
     listWidget->setStyleSheet("QListWidget {"
-                             "background-color: rgba(255, 255, 255, 240);" // 增加背景不透明度
+                             "background-color: rgba(255, 255, 255, 0.3);" // 进一步降低不透明度
+                             "backdrop-filter: blur(30px);" // 增加模糊效果
+                             "-webkit-backdrop-filter: blur(30px);" // Safari支持
                              "border-radius: 10px;"
-                             "border: 1px solid #E0E0E0;"
+                             "border: 1px solid rgba(224, 224, 224, 0.1);"
                              "outline: 0px;" /* 移除外部轮廓 */
                              "padding: 8px;"
                              "}"
                              "QListWidget::item {"
-                             "background-color: #FFFFFF;"
+                             "background-color: rgba(255, 255, 255, 0.4);"
                              "border-radius: 8px;"
                              "margin: 5px;"
                              "padding: 15px;"
-                             "border: 1px solid #E0E0E0;"
+                             "border: 1px solid rgba(224, 224, 224, 0.1);"
+                             "color: #264653;" /* 确保文字清晰可见 */
+                             "font-weight: bold;" /* 加粗文字增加可读性 */
+                             "text-shadow: 0 1px 3px rgba(255, 255, 255, 1);" /* 增强文字阴影提高可读性 */
                              "}"
                              "QListWidget::item:hover {"
-                             "background-color: #F5F9F8;"
+                             "background-color: rgba(245, 249, 248, 0.5);"
                              "border: 1px solid #2A9D8F;"
                              "}"
                              "QListWidget::item:selected {"
-                             "background-color: #DEF2F1;" /* 薄荷绿背景 */
+                             "background-color: rgba(222, 242, 241, 0.5);" /* 半透明薄荷绿背景 */
                              "border: 1px solid #2A9D8F;"
                              "color: #264653;" /* 深青色文字 */
                              "outline: 0px;" /* 移除选中时的虚线框 */
