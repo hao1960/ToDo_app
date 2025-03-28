@@ -643,7 +643,8 @@ void MainWindow::saveSettings() {
 
 // 加载设置
 void MainWindow::loadSettings() {
-    QSettings settings("ToDo_App", "Settings");
+    QString settingsPath = m_dataDir + "/settings.ini";
+    QSettings settings(settingsPath, QSettings::IniFormat);
     m_backgroundImagePath = settings.value("BackgroundImagePath", "").toString();
     if (!m_backgroundImagePath.isEmpty() && QFile::exists(m_backgroundImagePath)) {
         m_backgroundImage.load(m_backgroundImagePath);
@@ -969,7 +970,8 @@ void MainWindow::saveTasksByCategory(const QString &category) {
     // 使用分类名作为文件名的一部分，创建一个局部副本进行修改
     QString categoryName = category;
     QString fileName = "tasks_" + categoryName.replace(" ", "_") + ".json";
-    QFile file(fileName);
+    QString filePath = m_dataDir + "/" + fileName;
+    QFile file(filePath);
     if (file.open(QIODevice::WriteOnly)) {
         QJsonDocument doc(tasksObject);
         file.write(doc.toJson());
@@ -995,7 +997,8 @@ void MainWindow::loadTasksByCategory(const QString &category) {
     // 使用分类名作为文件名的一部分，创建一个局部副本进行修改
     QString categoryName = category;
     QString fileName = "tasks_" + categoryName.replace(" ", "_") + ".json";
-    QFile file(fileName);
+    QString filePath = m_dataDir + "/" + fileName;
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) return;
 
     QByteArray saveData = file.readAll();

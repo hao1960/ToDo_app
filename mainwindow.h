@@ -54,6 +54,7 @@ private:
     QString m_backgroundImagePath; // 背景图片路径
     FontHelper m_fontHelper; // 字体图标帮助类
     QString m_currentCategory; // 当前选中的分类
+    QString m_dataDir; // 应用数据存储目录
     void saveSettings(); // 保存设置（包括背景图片路径）
     void loadSettings(); // 加载设置
     void initTabWidget(); // 初始化标签页控件
