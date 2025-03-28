@@ -2,7 +2,7 @@
 ; 使用InnoSetup创建
 
 #define MyAppName "ToDo任务管理器"
-#define MyAppVersion "2.0.0"
+#define MyAppVersion "2.0.3"
 #define MyAppPublisher "您的名称或组织"
 #define MyAppURL "https://github.com/您的用户名/ToDo_app"
 #define MyAppExeName "ToDo_app.exe"

@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 
 # 添加版本信息
-VERSION = 2.0.0
+VERSION = 2.0.3
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 # 添加应用程序元数据
