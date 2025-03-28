@@ -28,6 +28,7 @@ public:
         FA_FOLDER_PLUS = 0xf07b, // 使用FA_FOLDER作为替代，FontAwesome 4.7.0没有folder-plus图标
         FA_CALENDAR = 0xf073,
         FA_COGS = 0xf085,
+        FA_PAINT_BRUSH = 0xf1fc, // 添加画笔图标用于配色方案选择器
         FA_TIMES = 0xf00d  // 添加X图标用于取消按钮
     };
     
@@ -45,4 +46,4 @@ private:
     QString m_fontFamily;
 };
 
-#endif // FONTHELPER_H 
+#endif // FONTHELPER_H

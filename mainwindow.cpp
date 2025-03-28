@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_currentTabIndex(0)
+    , m_colorScheme(Default) // 默认配色方案
 {
     ui->setupUi(this);
     
@@ -182,6 +183,58 @@ MainWindow::MainWindow(QWidget *parent)
        
     // 增强标签可见性    // 初始化应用 - 添加这一行
     enhanceLabelsVisibility();
+    
+    // 设置配色方案选择器
+    setupColorSchemeSelector();
+}
+
+// 设置配色方案选择器
+void MainWindow::setupColorSchemeSelector() {
+    // 创建配色方案选择标签
+    QLabel* colorSchemeIconLabel = new QLabel(this);
+    colorSchemeIconLabel->setFont(m_fontHelper.iconFont(14));
+    colorSchemeIconLabel->setText(m_fontHelper.iconToString(FontHelper::FA_PAINT_BRUSH));
+    
+    QHBoxLayout* colorSchemeLayout = new QHBoxLayout();
+    colorSchemeLayout->addWidget(colorSchemeIconLabel);
+    colorSchemeLayout->addWidget(new QLabel("配色方案：", this));
+    colorSchemeLayout->setContentsMargins(0, 0, 0, 0);
+    colorSchemeLayout->setSpacing(2);
+    
+    QWidget* colorSchemeWidget = new QWidget(this);
+    colorSchemeWidget->setLayout(colorSchemeLayout);
+    
+    // 创建配色方案选择下拉框
+    QComboBox* colorSchemeBox = new QComboBox(this);
+    colorSchemeBox->addItem("默认");
+    colorSchemeBox->addItem("蓝色系");
+    colorSchemeBox->addItem("粉色系");
+    colorSchemeBox->addItem("绿色系");
+    colorSchemeBox->addItem("紫色系");
+    colorSchemeBox->addItem("淡蓝粉");
+    colorSchemeBox->addItem("淡棕色");
+    
+    // 设置下拉框样式
+    QString comboBoxStyle = "QComboBox {"
+                           "background-color: rgba(255, 255, 255, 0.85);"
+                           "border: 2px solid #2A9D8F;"
+                           "border-radius: 6px;"
+                           "padding: 6px;"
+                           "font-weight: bold;"
+                           "color: #264653;"
+                           "}"
+                           "QComboBox::drop-down { border: 0px; }";
+    colorSchemeBox->setStyleSheet(comboBoxStyle);
+    
+    // 连接信号与槽
+    connect(colorSchemeBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::setColorScheme);
+    
+    // 添加到布局
+    ui->horizontalLayout->insertWidget(ui->horizontalLayout->indexOf(ui->backgroundButton), colorSchemeWidget);
+    ui->horizontalLayout->insertWidget(ui->horizontalLayout->indexOf(ui->backgroundButton), colorSchemeBox);
+    
+    // 设置当前选中的配色方案
+    colorSchemeBox->setCurrentIndex(m_colorScheme);
 }
 
 void MainWindow::setupIcons()
@@ -478,7 +531,7 @@ void MainWindow::saveCategories() {
     settings.setValue("categories", categories);
 }
 
-// 绘制事件，用于绘制背景图片
+// 绘制事件，用于绘制背景图片或配色方案
 void MainWindow::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     
@@ -487,24 +540,129 @@ void MainWindow::paintEvent(QPaintEvent *event) {
         painter.drawPixmap(rect(), m_backgroundImage.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         
         // 添加半透明蒙版，降低透明度使背景图片更清晰可见
-        painter.fillRect(rect(), QColor(255, 255, 255, 100)); // 从160降低到100，使背景更清晰
+        //painter.fillRect(rect(), QColor(255, 255, 255, 100)); // 从160降低到100，使背景更清晰
     } else {
-        // 如果没有背景图片，绘制一个渐变背景
+        // 如果没有背景图片，根据选择的配色方案绘制渐变背景
         QLinearGradient gradient(0, 0, width(), height());
-        gradient.setColorAt(0, QColor("#FFFFFF"));
-        gradient.setColorAt(0.5, QColor("#F9FAFB"));
-        gradient.setColorAt(1, QColor("#F0F2F5"));
+        
+        // 根据配色方案设置渐变色
+        switch (m_colorScheme) {
+            case Default:
+                // 默认配色方案 - 使用与底部色彩条一致的配色
+                gradient.setColorAt(0, QColor("#2A9D8F"));
+                gradient.setColorAt(0.25, QColor("#E9C46A"));
+                gradient.setColorAt(0.5, QColor("#F4A261"));
+                gradient.setColorAt(0.75, QColor("#E76F51"));
+                gradient.setColorAt(1, QColor("#264653"));
+                break;
+                
+            case Blue:
+                // 蓝色系：
+                gradient.setColorAt(0, QColor("#caf0f8"));
+                gradient.setColorAt(0.25, QColor("#90e0ef"));
+                gradient.setColorAt(0.5, QColor("#00b4d8"));
+                gradient.setColorAt(0.75, QColor("#0077b6"));
+                gradient.setColorAt(1, QColor("#03045e"));
+                break;
+                
+            case Pink:
+                // 粉色系：
+                gradient.setColorAt(0, QColor("#ffe5ec"));
+                gradient.setColorAt(0.25, QColor("#ffc2d1"));
+                gradient.setColorAt(0.5, QColor("#ffb3c6"));
+                gradient.setColorAt(0.75, QColor("#ff8fab"));
+                gradient.setColorAt(1, QColor("#fb6f92"));
+                break;
+                
+            case Green:
+                // 绿色系：=
+                gradient.setColorAt(0, QColor("#d9ed92"));
+                gradient.setColorAt(0.25, QColor("#b5e48c"));
+                gradient.setColorAt(0.5, QColor("#99d98c"));
+                gradient.setColorAt(0.75, QColor("#76c893"));
+                gradient.setColorAt(1, QColor("#52b69a"));
+                break;
+                
+            case Purple:
+                // 紫色系：
+                gradient.setColorAt(0, QColor("#e0aaff"));
+                gradient.setColorAt(0.25, QColor("#c77dff"));
+                gradient.setColorAt(0.5, QColor("#9d4edd"));
+                gradient.setColorAt(0.75, QColor("#7b2cbf"));
+                gradient.setColorAt(1, QColor("#5a189a"));
+                break;
+                
+            case LightBlue:
+                // 淡蓝粉：a2d2ff、bde0fe、ffafcc
+                gradient.setColorAt(0, QColor("#a2d2ff"));
+                gradient.setColorAt(0.25, QColor("#bde0fe"));
+                gradient.setColorAt(0.5, QColor("#ffafcc"));
+                gradient.setColorAt(0.75, QColor("#ffc8dd"));
+                gradient.setColorAt(1, QColor("#cdb4db"));
+                break;
+                
+            case LightBrown:
+                // 淡棕色：fefae0、faedcd、d4a373
+                gradient.setColorAt(0, QColor("#fefae0"));
+                gradient.setColorAt(0.5, QColor("#dda15e"));
+                gradient.setColorAt(1, QColor("#bc6c25"));
+                break;
+        }
+        
         painter.fillRect(rect(), gradient);
         
         // 添加一些装饰性元素 - 底部的装饰条
         int stripeHeight = 8;
         QRect bottomStripe(0, height() - stripeHeight, width(), stripeHeight);
         QLinearGradient stripGradient(0, 0, width(), 0);
-        stripGradient.setColorAt(0, QColor("#2A9D8F"));
-        stripGradient.setColorAt(0.25, QColor("#E9C46A"));
-        stripGradient.setColorAt(0.5, QColor("#F4A261"));
-        stripGradient.setColorAt(0.75, QColor("#E76F51"));
-        stripGradient.setColorAt(1, QColor("#264653"));
+        
+        // 根据配色方案设置装饰条颜色
+        switch (m_colorScheme) {
+            case Default:
+                stripGradient.setColorAt(0, QColor("#2A9D8F"));
+                stripGradient.setColorAt(0.25, QColor("#E9C46A"));
+                stripGradient.setColorAt(0.5, QColor("#F4A261"));
+                stripGradient.setColorAt(0.75, QColor("#E76F51"));
+                stripGradient.setColorAt(1, QColor("#264653"));
+                break;
+                
+            case Blue:
+                stripGradient.setColorAt(0, QColor("#52b69a"));
+                stripGradient.setColorAt(0.5, QColor("#34a0a4"));
+                stripGradient.setColorAt(1, QColor("#168aad"));
+                break;
+                
+            case Pink:
+                stripGradient.setColorAt(0, QColor("#ffb3c1"));
+                stripGradient.setColorAt(0.5, QColor("#ff8fa3"));
+                stripGradient.setColorAt(1, QColor("#ff758f"));
+                break;
+                
+            case Green:
+                stripGradient.setColorAt(0, QColor("#d9ed92"));
+                stripGradient.setColorAt(0.5, QColor("#b5e48c"));
+                stripGradient.setColorAt(1, QColor("#99d98c"));
+                break;
+                
+            case Purple:
+                stripGradient.setColorAt(0, QColor("#c77dff"));
+                stripGradient.setColorAt(0.5, QColor("#9d4edd"));
+                stripGradient.setColorAt(1, QColor("#7b2cbf"));
+                break;
+                
+            case LightBlue:
+                stripGradient.setColorAt(0, QColor("#a2d2ff"));
+                stripGradient.setColorAt(0.5, QColor("#bde0fe"));
+                stripGradient.setColorAt(1, QColor("#ffafcc"));
+                break;
+                
+            case LightBrown:
+                stripGradient.setColorAt(0, QColor("#fefae0"));
+                stripGradient.setColorAt(0.5, QColor("#faedcd"));
+                stripGradient.setColorAt(1, QColor("#d4a373"));
+                break;
+        }
+        
         painter.fillRect(bottomStripe, stripGradient);
     }
         
@@ -625,6 +783,9 @@ void MainWindow::resetBackgroundImage() {
     m_backgroundImagePath = "";
     m_backgroundImage = QPixmap(); // 空图片
     
+    // 重置配色方案为默认
+    m_colorScheme = Default;
+    
     // 保存设置
     saveSettings();
     
@@ -635,10 +796,38 @@ void MainWindow::resetBackgroundImage() {
     QMessageBox::information(this, tr("背景已重置"), tr("已恢复默认背景"));
 }
 
+// 设置背景配色方案
+void MainWindow::setColorScheme(int scheme) {
+    m_colorScheme = static_cast<ColorScheme>(scheme);
+    
+    // 清除背景图片，使用配色方案
+    if (!m_backgroundImage.isNull()) {
+        m_backgroundImagePath = "";
+        m_backgroundImage = QPixmap();
+    }
+    
+    // 应用配色方案
+    applyColorScheme(m_colorScheme);
+    
+    // 保存设置
+    saveSettings();
+    
+    // 重绘窗口
+    update();
+}
+
+// 应用背景配色方案
+void MainWindow::applyColorScheme(ColorScheme scheme) {
+    // 这里不需要实际应用配色方案，因为paintEvent会根据m_colorScheme绘制背景
+    // 只需要保存当前选择的方案即可
+    m_colorScheme = scheme;
+}
+
 // 保存设置
 void MainWindow::saveSettings() {
     QSettings settings("ToDo_App", "Settings");
     settings.setValue("BackgroundImagePath", m_backgroundImagePath);
+    settings.setValue("ColorScheme", static_cast<int>(m_colorScheme));
 }
 
 // 加载设置
@@ -649,6 +838,9 @@ void MainWindow::loadSettings() {
     if (!m_backgroundImagePath.isEmpty() && QFile::exists(m_backgroundImagePath)) {
         m_backgroundImage.load(m_backgroundImagePath);
     }
+    
+    // 加载配色方案设置
+    m_colorScheme = static_cast<ColorScheme>(settings.value("ColorScheme", static_cast<int>(Default)).toInt());
 }
 
 // 事件过滤器实现

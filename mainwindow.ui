@@ -63,7 +63,7 @@
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -78,9 +78,6 @@
         <property name="toolTip">
          <string>创建一个新的任务分类</string>
         </property>
-        <property name="text">
-         <string>+ 新建分类</string>
-        </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
   background-color: rgba(50, 150, 250, 180);
@@ -92,6 +89,9 @@
 QPushButton:hover {
   background-color: rgba(70, 170, 255, 200);
 }</string>
+        </property>
+        <property name="text">
+         <string>+ 新建分类</string>
         </property>
        </widget>
       </item>
@@ -127,16 +127,16 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="addButton">
+       <widget class="QPushButton" name="deleteButton">
         <property name="text">
-         <string>添加</string>
+         <string>删除</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="deleteButton">
+       <widget class="QPushButton" name="addButton">
         <property name="text">
-         <string>删除</string>
+         <string>添加</string>
         </property>
        </widget>
       </item>
@@ -144,15 +144,6 @@ QPushButton:hover {
     </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <property name="tabsClosable">
-       <bool>false</bool>
-      </property>
-      <property name="movable">
-       <bool>true</bool>
-      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget::pane {
   background-color: rgba(255, 255, 255, 150);
@@ -171,6 +162,15 @@ QTabBar::tab:selected {
 QTabBar::tab:hover {
   background-color: rgba(235, 235, 235, 200);
 }</string>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
       </property>
      </widget>
     </item>

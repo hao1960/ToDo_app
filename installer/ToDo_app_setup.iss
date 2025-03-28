@@ -4,7 +4,7 @@
 #define MyAppName "ToDo任务管理器"
 #define MyAppVersion "2.0.3"
 #define MyAppPublisher "您的名称或组织"
-#define MyAppURL "https://github.com/您的用户名/ToDo_app"
+#define MyAppURL "https://github.com/hao1960/ToDo_app"
 #define MyAppExeName "ToDo_app.exe"
 #define MyAppIcoName "todolist.ico"
 
@@ -47,7 +47,7 @@ Name: "quicklaunchicon"; Description: "创建快速启动图标"; GroupDescripti
 
 [Files]
 ; 主程序文件
-Source: "E:\QT_app\ToDo_app\release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 ; 必要的DLL和依赖库
 Source: "E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; Qt平台插件
@@ -59,8 +59,8 @@ Source: "E:\QT_app\ToDo_app\fonts\*"; DestDir: "{app}\fonts\"; Flags: ignorevers
 ; 图标文件 - 确保图标也被复制到安装目录
 Source: "E:\QT_app\ToDo_app\icons\{#MyAppIcoName}"; DestDir: "{app}"; Flags: ignoreversion
 ; 其他必要的资源文件和目录
-Source: "E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\imageformats\*"; DestDir: "{app}\imageformats\"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: DirExists('E:\QT_app\ToDo_app\release\imageformats\')
-Source: "E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\iconengines\*"; DestDir: "{app}\iconengines\"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: DirExists('E:\QT_app\ToDo_app\release\iconengines\')
+Source: "E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\imageformats\*"; DestDir: "{app}\imageformats\"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: DirExists('E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\imageformats\')
+Source: "E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\iconengines\*"; DestDir: "{app}\iconengines\"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: DirExists('E:\QT_app\ToDo_app\build\Desktop_Qt_6_8_2_MinGW_64_bit-Release\release\iconengines\')
 
 ; 注意：不要包含任何 tasks_*.json 文件，确保新安装的程序使用默认初始化过程
 
